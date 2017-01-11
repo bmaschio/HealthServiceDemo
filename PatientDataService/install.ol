@@ -10,43 +10,52 @@ inputPort InstallationPort {
 }
 execution{ concurrent }
 main{
-[setConfigFile(request)(response){
-    for (counter= 0, counter < #request.configData, counter++ ){
-      requestData.data.(request.configData[counter].name) = request.configData[counter].value
-    };
-    valueToPrettyString@StringUtils(requestData)(s);
-    println@Console(s)()
 
-  }]
-  [runInstall(request)(response){
       with (connectionInfo) {
-        .host="localhost";
-        .port= 5432;
-        .driver = "postgresql";
-        .database= "postgres";
-        .username="postgres";
-        .password= "postgres"
+        .host=config.location;
+        .port= int (config.port);
+        .driver = config.driver;
+        .database= config.startingdb;
+        .username=config.username;
+        .password= config.password
       };
       connect@Database(request)();
       q = "CREATE DATABASE 'PatientData' WITH OWNER = postgres ENCODING = 'UTF8'";
-      query@Database(q)();
+      update@Database(q)();
       close@Database()();
 
       with (connectionInfo) {
-        .host="localhost";
-        .port= 5432;
-        .driver = "postgresql";
+        .host=config.location;
+        .port= int (config.port);
+        .driver = config.driver;
         .database= "PatientData";
-        .username="postgres";
-        .password= "postgres"
+        .username=config.username;
+        .password= config.password
       };
       connect@Database(request)();
-     
 
+      undef(q);
+      q= "CREATE TABLE public.physiology_data(mrm_key integer,name character varying ,value character varying) WITH ( OIDS = FALSE)"
+      update@Database(q)();
+      undef(q);
+      q= "CREATE TABLE public.patient_data
+              (
+                  date_of_birth date,
+                  name character varying ,
+                  surname character varying,
+                  ssn character varying ,
+                  gender character varying,
+                  mrn integer NOT NULL DEFAULT nextval('mrn_sequence'::regclass),
+                  insurence_id character varying ,
+                  insurence_nr character varying
+                )
+                WITH (
+                  OIDS = FALSE
+                  )"
+      update@Database(q)();
 
-
-
-
-    }]
+      undef(q);
+      q= "CREATE TABLE public.physiology_data(mrm_key integer,name character varying ,value character varying) WITH ( OIDS = FALSE)"
+      update@Database(q)();
 
 }
