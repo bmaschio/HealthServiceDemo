@@ -1,25 +1,29 @@
+type InsuraceDataType:void{
+  .insurence_id:string
+  .insurence_nr:string
+}
+
 type CreatePatientAnagraficRequest:void{
    .surname:string
    .name:string
    .dateOfBirth:string
    .gender:string
    .ssn:string
-   .insuranceData?:void{
-     .insurence_id:string
-     .insurence_nr:string
-   }
+   .insuranceData?:InsuraceDataType
 }
 
 type CreatePatientAnagraficResponse:void{
   .mrn:int
 }
 
+type PatientPhysiologyDataType:void{
+  .name:string
+  .value: string
+}
+
 type AddPhysiologyDataRequest:void{
   .mrm:int
-  .physiologyData:void{
-    .name:string
-    .value: string
-  }
+  .physiologyData:PatientPhysiologyDataType
 }
 
 type AddPhysiologyDataResponse:void
@@ -30,30 +34,21 @@ type ModifyPatientAnagraficRequest:void{
   .dateOfBirth:string
   .gender:string
   .ssn:string
-  .insuranceData?:void{
-    .insurence_id:string
-    .insurence_nr:string
-  }
+  .insuranceData?:InsuraceDataType
 }
 
 type ModifyPatientAnagraficResponse:void
 
 type ModifyPhysiologyDataRequest:void{
   .mrm:int
-  .physiologyData:void{
-    .name:string
-    .value: string
-  }
+  .physiologyData: PhysiologyDataType
 }
 
 type ModifyPhysiologyDataResponse:void
 
 type RemovePhysiologyDataRequest :void{
   .mrm:int
-  .physiologyData*:void{
-    .name:string
-    .value: string
-  }
+  .physiologyData*: PhysiologyDataType
 }
 
 
@@ -74,14 +69,8 @@ type GetPatientDataResponse:void{
     .dateOfBirth:string
     .gender:string
     .ssn:string
-    .insuranceData?:void{
-      .insurence_id:string
-      .insurence_nr:string
-    }
-    .physiologyData*:void{
-      .name:string
-      .value: string
-    }
+    .insuranceData?:InsuraceDataType
+    .physiologyData*:PhysiologyDataType
   }
 }
 
@@ -95,37 +84,81 @@ type GetPatientDataFromInsuranceRequest:void{
 }
 
 
-
 type GetPhysiologyDataTypeRequest:void{
-  .physiologyDataType:void{
-      .name:string
-      .type:string
-      .dataTable?:string
-  }
+    .name?:string
 }
+
+type PhysiologyDataType :void{
+  .name:string
+  .text:string
+  .type_name:string
+  .type_var:string
+  .referance_table?:string
+
+}
+type GetPhysiologyDataTypeResponse:void{
+  .physiologyDataType*: PhysiologyDataType
+}
+
+type InsertPhysiologyDataRangeRequest:void{
+  .name:string
+  .min: string
+  .max: string
+}
+
+type InsertPhysiologyDataRangeResponse:void
+
+
 type GetPhysiologyDataRangeRequest:void{
-      .name:string
+  .name:string
 }
 
 type  GetPhysiologyDataRangeResponse:void{
-  .min: any
-  .max: any
-  .type: string
+  .min: string
+  .max: string
 }
 type GetPhysiologyDataValuesRequest:void{
-  .dataTable:string
+  .referance_table:string
 }
 
-type GetPhysiologyDataValuesRequest:void{
-   .values*:string
+type PhysiologyDataTableValue:void{
+    .value:string
+    .value_text:string
 }
+type GetPhysiologyDataValuesResponse:void{
+    .values*: PhysiologyDataTableValue
+}
+
+type InsertPhysiologyDataTypeRequest:void{
+  .name:string
+  .text:string
+  .type_name:string
+  .type_var:string
+  .referance_table?:string
+}
+
+type InsertPhysiologyDataTypeResponse:void
+
+type CreatePhysiologyDataTableRequest:void{
+  .referance_table:string
+}
+
+type CreatePhysiologyDataTableResponse:void
+
+type InsertPhysiologyDataValueRequest:void{
+  .referance_table:string
+  .value:string
+  .value_text:string
+}
+type InsertPhysiologyDataValueResponse:void
+
 interface PatientDataServiceInterface {
 RequestResponse:
   createPatientAnagrafic(CreatePatientAnagraficRequest)(CreatePatientAnagraficResponse),
   modifyPatientAnagrafic (ModifyPatientAnagraficRequest) (ModifyPatientAnagraficResponse),
   getPatientData(GetPatientDataRequest)(GetPatientDataResponse),
   getPatientDataFromSSN(GetPatientDataFromSSNRequest)(GetPatientDataResponse),
-  getPatientDataFromInsurance ( GetPatientDataFromInsuranceRequest) (GetPatientDataFromInsuranceResponse),
+  getPatientDataFromInsurance ( GetPatientDataFromInsuranceRequest) (GetPatientDataResponse),
   addPhysiologyData (AddPhysiologyDataRequest) (AddPhysiologyDataResponse),
   removePhysiologyData (RemovePhysiologyDataRequest)(RemovePhysiologyDataResponse),
   modifyPhysiologyData (ModifyPhysiologyDataRequest)(ModifyPhysiologyDataRequest)
@@ -133,7 +166,11 @@ RequestResponse:
 
 interface PatientDataServiceSupportInterface{
   RequestResponse:
+   insertPhysiologyDataType (InsertPhysiologyDataTypeRequest)(InsertPhysiologyDataTypeResponse),
    getPhysiologyDataType(GetPhysiologyDataTypeRequest)(GetPhysiologyDataTypeResponse),
+   insertPhysiologyDataRange (InsertPhysiologyDataRangeRequest)(InsertPhysiologyDataRangeResponse),
    getPhysiologyDataRange (GetPhysiologyDataRangeRequest) (GetPhysiologyDataRangeResponse),
+   createPhysiologyDataTable(CreatePhysiologyDataTableRequest)(CreatePhysiologyDataTableResponse),
+   insertPhysiologyDataValue(InsertPhysiologyDataValueRequest)(insertPhysiologyDataValueResponse),
    getPhysiologyDataValues (GetPhysiologyDataValuesRequest) (GetPhysiologyDataValuesResponse)
 }

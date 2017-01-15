@@ -1,0 +1,8 @@
+<configData>
+    <location>localhost</location>
+    <port>5432</port>
+    <driver>postgresql</driver>
+    <startingdb>postgres</startingdb>
+    <username>postgres</username>
+    <password>postgres</password>
+</configData>
