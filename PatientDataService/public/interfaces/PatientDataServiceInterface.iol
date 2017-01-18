@@ -6,14 +6,14 @@ type InsuraceDataType:void{
 type CreatePatientAnagraficRequest:void{
    .surname:string
    .name:string
-   .dateOfBirth:string
+   .date_of_birth:string
    .gender:string
    .ssn:string
    .insuranceData?:InsuraceDataType
 }
 
 type CreatePatientAnagraficResponse:void{
-  .mrn:int
+  .mrn:long
 }
 
 type PatientPhysiologyDataType:void{
@@ -23,7 +23,7 @@ type PatientPhysiologyDataType:void{
 
 type AddPhysiologyDataRequest:void{
   .mrm:int
-  .physiologyData:PatientPhysiologyDataType
+  .physiologyData*:PatientPhysiologyDataType
 }
 
 type AddPhysiologyDataResponse:void
@@ -31,7 +31,7 @@ type AddPhysiologyDataResponse:void
 type ModifyPatientAnagraficRequest:void{
   .surname:string
   .name:string
-  .dateOfBirth:string
+  .date_of_birth:string
   .gender:string
   .ssn:string
   .insuranceData?:InsuraceDataType
@@ -58,7 +58,7 @@ type RemovePhysiologyDataResponse:void
 type GetPatientDataRequest:void{
   .surname:string
   .name:string
-  .dateOfBirth:string
+  .date_of_birth:string
   .gender:string
 }
 
@@ -66,7 +66,7 @@ type GetPatientDataResponse:void{
   .patientData*:void{
     .surname:string
     .name:string
-    .dateOfBirth:string
+    .date_of_birth:string
     .gender:string
     .ssn:string
     .insuranceData?:InsuraceDataType
@@ -171,6 +171,6 @@ interface PatientDataServiceSupportInterface{
    insertPhysiologyDataRange (InsertPhysiologyDataRangeRequest)(InsertPhysiologyDataRangeResponse),
    getPhysiologyDataRange (GetPhysiologyDataRangeRequest) (GetPhysiologyDataRangeResponse),
    createPhysiologyDataTable(CreatePhysiologyDataTableRequest)(CreatePhysiologyDataTableResponse),
-   insertPhysiologyDataValue(InsertPhysiologyDataValueRequest)(insertPhysiologyDataValueResponse),
+   insertPhysiologyDataValue(InsertPhysiologyDataValueRequest)(InsertPhysiologyDataValueResponse),
    getPhysiologyDataValues (GetPhysiologyDataValuesRequest) (GetPhysiologyDataValuesResponse)
 }
