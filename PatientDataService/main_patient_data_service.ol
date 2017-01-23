@@ -68,7 +68,17 @@ main{
     }]
 
   [modifyPatientAnagrafic(request)(response){
-          nullProcess
+    scope (addPhysiologyDataScope){
+      install (default=> valueToPrettyString@StringUtils(addPhysiologyDataScope)(s);
+            println@Console(s)());
+        for (counter =0 , counter < #request.physiologyData, counter++){
+             q.statement[counter]= "update into physiology_data(mrm_key, name,value) VALUES (:mrm_key, :name, :value) ";
+             q.statement[counter].name = request.physiologyData[counter].name;
+             q.statement[counter].value = request.physiologyData[counter].value;
+             q.statement[counter].mrm_key =request.mrn
+           };
+          executeTransaction@Database(q)(resultQ)
+      }
     }]
 
   [addPhysiologyData(request)(response){
@@ -76,22 +86,40 @@ main{
       install (default=> valueToPrettyString@StringUtils(addPhysiologyDataScope)(s);
             println@Console(s)());
         for (counter =0 , counter < #request.physiologyData, counter++){
-             q.statement[counter]= "insert into physiology_data(mrm_key, name, value) VALUES (:mrn_key, :name, :value) ";
+             q.statement[counter]= "insert into physiology_data(mrm_key, name, value) VALUES (:mrm_key, :name, :value) ";
              q.statement[counter].name = request.physiologyData[counter].name;
              q.statement[counter].value = request.physiologyData[counter].value;
-             q.statement[counter].mrm_key = request.physiologyData[counter].mrm_key
+             q.statement[counter].mrm_key =request.mrn
            };
           executeTransaction@Database(q)(resultQ)
       }
     }]
 
   [modifyPhysiologyData(request)(response){
-
-        nullProcess
+    scope (modifyPhysiologyDataScope){
+      install (default=> valueToPrettyString@StringUtils(modifyPhysiologyDataScope)(s);
+            println@Console(s)());
+        for (counter =0 , counter < #request.physiologyData, counter++){
+             q.statement[counter]= "update physiology_data set value = :value where mrm = :mrm_key  and name=:name";
+             q.statement[counter].name = request.physiologyData[counter].name;
+             q.statement[counter].value = request.physiologyData[counter].value;
+             q.statement[counter].mrm_key =request.mrn
+           };
+          executeTransaction@Database(q)(resultQ)
+      }
     }]
 
   [removePhysiologyData(request)(response){
-       nullProcess
+    scope (removePhysiologyDataScope){
+      install (default=> valueToPrettyString@StringUtils(removePhysiologyDataScope)(s);
+            println@Console(s)());
+        for (counter =0 , counter < #request.physiologyData, counter++){
+             q.statement[counter]= "delete from  physiology_data  where mrm = :mrm_key and name=:name";
+             q.statement[counter].name = request.physiologyData[counter].name;
+             q.statement[counter].mrm_key =request.mrn
+           };
+          executeTransaction@Database(q)(resultQ)
+      }
     }]
   [getPhysiologyDataType(request)(response){
       scope (getPhysiologyDataTypeScope){
@@ -186,4 +214,20 @@ main{
           update@Database(request)()
       }
     }]
+    [getPatientData(request)(response){
+      scope (getPatientDataScope){
+        install (default=> valueToPrettyString@StringUtils(getPatientDataScopes)(s);
+                           println@Console(s)());
+          q= "select * from patient_data"
+          if (is_defined(request.surname)) {
+            q = " where surname like :surname_search";
+            q.surname_search = request.surname;
+          }
+          if (is_defined (request.surname) && is_defined(request.name)){
+            q = " where surname like :surname_search and :name_search";
+            q.surname_search = request.surname;
+            q.name_search = request.name
+          }
+       }
+      }]
 }

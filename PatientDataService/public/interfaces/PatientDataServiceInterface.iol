@@ -22,7 +22,7 @@ type PatientPhysiologyDataType:void{
 }
 
 type AddPhysiologyDataRequest:void{
-  .mrm:int
+  .mrn:int
   .physiologyData*:PatientPhysiologyDataType
 }
 
@@ -56,10 +56,10 @@ type RemovePhysiologyDataResponse:void
 
 
 type GetPatientDataRequest:void{
-  .surname:string
-  .name:string
-  .date_of_birth:string
-  .gender:string
+  .surname?:string
+  .name?:string
+  .date_of_birth?:string
+  .gender?:string
 }
 
 type GetPatientDataResponse:void{
