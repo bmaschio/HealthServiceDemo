@@ -54,6 +54,13 @@ type RemovePhysiologyDataRequest :void{
 
 type RemovePhysiologyDataResponse:void
 
+type GetPhysiologyDataRequest :void{
+  .mrm:int
+}
+type GetPhysiologyDataResponse:void{
+    .physiologyData*: PhysiologyDataType
+}
+
 
 type GetPatientDataRequest:void{
   .surname?:string
@@ -62,16 +69,17 @@ type GetPatientDataRequest:void{
   .gender?:string
 }
 
+type PatientDataType: void{
+  .surname:string
+  .name:string
+  .date_of_birth:string
+  .gender:string
+  .ssn:string
+  .insuranceData?:InsuraceDataType
+
+}
 type GetPatientDataResponse:void{
-  .patientData*:void{
-    .surname:string
-    .name:string
-    .date_of_birth:string
-    .gender:string
-    .ssn:string
-    .insuranceData?:InsuraceDataType
-    .physiologyData*:PhysiologyDataType
-  }
+  .patientData*: PatientDataType
 }
 
 type GetPatientDataFromSSNRequest:void{
@@ -161,7 +169,8 @@ RequestResponse:
   getPatientDataFromInsurance ( GetPatientDataFromInsuranceRequest) (GetPatientDataResponse),
   addPhysiologyData (AddPhysiologyDataRequest) (AddPhysiologyDataResponse),
   removePhysiologyData (RemovePhysiologyDataRequest)(RemovePhysiologyDataResponse),
-  modifyPhysiologyData (ModifyPhysiologyDataRequest)(ModifyPhysiologyDataRequest)
+  modifyPhysiologyData (ModifyPhysiologyDataRequest)(ModifyPhysiologyDataRequest),
+  getPhysiologyData(GetPhysiologyDataRequest)(GetPhysiologyDataResponse)
 }
 
 interface PatientDataServiceSupportInterface{

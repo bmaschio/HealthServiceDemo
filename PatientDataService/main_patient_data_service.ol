@@ -72,7 +72,7 @@ main{
       install (default=> valueToPrettyString@StringUtils(addPhysiologyDataScope)(s);
             println@Console(s)());
         for (counter =0 , counter < #request.physiologyData, counter++){
-             q.statement[counter]= "update into physiology_data(mrm_key, name,value) VALUES (:mrm_key, :name, :value) ";
+             q.statement[counter]= "update into physiology_data(mrn_key, name,value) VALUES (:mrn_key, :name, :value) ";
              q.statement[counter].name = request.physiologyData[counter].name;
              q.statement[counter].value = request.physiologyData[counter].value;
              q.statement[counter].mrm_key =request.mrn
@@ -86,7 +86,7 @@ main{
       install (default=> valueToPrettyString@StringUtils(addPhysiologyDataScope)(s);
             println@Console(s)());
         for (counter =0 , counter < #request.physiologyData, counter++){
-             q.statement[counter]= "insert into physiology_data(mrm_key, name, value) VALUES (:mrm_key, :name, :value) ";
+             q.statement[counter]= "insert into physiology_data(mrn_key, name, value) VALUES (:mrn_key, :name, :value) ";
              q.statement[counter].name = request.physiologyData[counter].name;
              q.statement[counter].value = request.physiologyData[counter].value;
              q.statement[counter].mrm_key =request.mrn
@@ -100,7 +100,7 @@ main{
       install (default=> valueToPrettyString@StringUtils(modifyPhysiologyDataScope)(s);
             println@Console(s)());
         for (counter =0 , counter < #request.physiologyData, counter++){
-             q.statement[counter]= "update physiology_data set value = :value where mrm = :mrm_key  and name=:name";
+             q.statement[counter]= "update physiology_data set value = :value where mrn_key = :mrm_key  and name=:name";
              q.statement[counter].name = request.physiologyData[counter].name;
              q.statement[counter].value = request.physiologyData[counter].value;
              q.statement[counter].mrm_key =request.mrn
@@ -218,16 +218,46 @@ main{
       scope (getPatientDataScope){
         install (default=> valueToPrettyString@StringUtils(getPatientDataScopes)(s);
                            println@Console(s)());
-          q= "select * from patient_data"
+          q= "select * from patient_data";
           if (is_defined(request.surname)) {
             q = " where surname like :surname_search";
-            q.surname_search = request.surname;
-          }
-          if (is_defined (request.surname) && is_defined(request.name)){
-            q = " where surname like :surname_search and :name_search";
-            q.surname_search = request.surname;
+            q.surname_search = request.surname
+          };
+          if (is_defined(request.name)){
+            q+= " where name like :name_search";
             q.name_search = request.name
+          };
+          if (is_defined(request.ssn)){
+            q+= " where ssn = :ssn";
+            q.ssn = request.ssn
+          };
+
+          if (is_defined(request.insurance_id) && is_defined( request.insurace_id )){
+            q+= " where insurance_id like :insurance_id and insurance_nr like insurance_nr";
+            q.insurance_id = request.insurance_id;
+            q.insurance_nr = request.insurance_nr
+          };
+
+          valueToPrettyString@StringUtils(q)(s);
+          println@Console(s)();
+          query@Database(q)(response_q);
+          valueToPrettyString@StringUtils(response_q)(s);
+          println@Console(s)();
+          for (counter = 0 , counter < #response_q.row ,counter++){
+            with (response.patientData[counter]){
+                .name = response_q.row[counter].name;
+                .surname = response_q.row[counter].surname;
+                .date_of_birth = response_q.row[counter].date_of_birth;
+                .gender = response_q.row[counter].gender;
+                .ssn = response_q.row[counter].ssn;
+                if (response_q.row[counter].insurence_id != ""){
+                   .insuranceData.insurance_id = response_q.row[counter].insurance_id;
+                   .insuranceData.insurance_nr = response_q.row[counter].insurance_nr
+                }
+            }
           }
+
+
        }
       }]
 }
