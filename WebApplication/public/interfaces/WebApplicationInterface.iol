@@ -12,7 +12,28 @@ type AddPatientRequest:void{
   .insuranceData?:insuranceType
 }
 
+type AddPatientResponse:void{
+  .mrn: string
+  .status: string
+}
 
+type  PhysiologyType : void{
+  .name:string
+  .value: string
+}
+
+type  PhysiologyErrorType : void{
+  .name:string
+  .value: string
+}
+type AddPatientPhysiologyRequest:void{
+  .mrm:int
+  .physiologyData*: PhysiologyType
+}
+type AddPatientPhysiologyResponse :void{
+  .status: string
+  .error*: PhysiologyErrorType
+}
 
 
 interface WebApplicationInterface {
