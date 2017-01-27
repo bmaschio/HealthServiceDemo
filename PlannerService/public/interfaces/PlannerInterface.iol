@@ -27,14 +27,14 @@ type StepDataType:void{
 }
 
 type AddStepToPlanRequest:void{
-  .plan_id: string
+  .plan_id: int
   .function: string
   .data*:StepDataType
-  .prerequisit*:string
+  .prerequisit*:int
 }
 
 type AddStepToPlanResponse: void{
-  .step_id: string
+  .step_id: int
 }
 
 type RemoveStepFromPlanRequest: void{
@@ -47,7 +47,7 @@ type CloseStepFromPlanRequest:void{
   .step_id:string
 }
 
-type CloseStepFromPlanResponse: void 
+type CloseStepFromPlanResponse: void
 
 interface PlannerInterface {
   RequestResponse:
