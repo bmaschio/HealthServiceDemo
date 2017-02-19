@@ -1,9 +1,10 @@
 type RunActivityResponse: void {
-  .next: string
-  .stop: bool
+  .location? :string
+  .stop?: bool
 }
 
 interface ActivityInterface {
   RequestResponse:
-    run( undefined )( RunActivityResponse )
+    run( undefined )( undefined ),
+    close_step (undefined)(undefined)
 }

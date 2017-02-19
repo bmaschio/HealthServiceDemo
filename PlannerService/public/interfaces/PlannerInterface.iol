@@ -1,60 +1,14 @@
-
-
-type CreatePlanRequest:void{
-   .mrn:int
-   .doctor: string
-   .date:string
+type GetResorceRequest:void{
+  .uniqueId*: string
 }
 
-type CreatePlanResponse:void{
-  .plan_id:int
+type GetResouceResponse: void {
+  .date_time: string
+  .uniqueId : string
 }
 
-type DeletePlanRequest:void{
-  .planId:int
-}
-type DeletePlanResponse:void
-
-type ProcessPlanRequest:void{
-  .plan_id:int
-}
-
-type  ProcessPlanResponse:void
-
-type StepDataType:void{
-  .name: string
-  .value: string
-}
-
-type AddStepToPlanRequest:void{
-  .plan_id: int
-  .function: string
-  .data*:StepDataType
-  .prerequisit*:int
-}
-
-type AddStepToPlanResponse: void{
-  .step_id: int
-}
-
-type RemoveStepFromPlanRequest: void{
-  .step_id: string
-}
-
-type RemoveStepFromPlanResponse: void
-
-type CloseStepFromPlanRequest:void{
-  .step_id:string
-}
-
-type CloseStepFromPlanResponse: void
 
 interface PlannerInterface {
   RequestResponse:
-    createPlan(CreatePlanRequest)(CreatePlanResponse),
-    deletePlan(DeletePlanRequest)(DeletePlanResponse),
-    processPlan(ProcessPlanRequest)(ProcessPlanResponse),
-    addStepToPlan (AddStepToPlanRequest)(AddStepToPlanResponse),
-    removeStepFromPlan (RemoveStepFromPlanRequest)(RemoveStepFromPlanResponse),
-    closeStepFromPlan (CloseStepFromPlanRequest)(CloseStepFromPlanResponse)
+    getResource(GetResorceRequest)(GetResouceResponse)
 }

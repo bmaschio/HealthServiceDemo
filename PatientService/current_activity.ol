@@ -16,17 +16,14 @@ inputPort ActivityExt {
 execution{ concurrent}
 init{
   valueToPrettyString@StringUtils(global)(s);
-  println@Console(s)();
-  global.status = "first"
+  println@Console(s)()
 }
 
 main{
-  [run (request)(response){
-      response.status = global.status;
-      response.stop = false;
-      if ( global.status =   )
-  }]
-  [close_step (request)(response){
+  run (request)(response){
+      println@Console("test")()
+  };
+  close_step (request)(response){
      nullProcess
-  }]
+  }
 }
