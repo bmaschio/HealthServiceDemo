@@ -1,0 +1,14 @@
+main{
+    registMyVisit@DoctorServicePort(request)(response);
+    //this is a block  of my workflow that is called by the doctor service
+    waitForMyExam(request)(response){
+
+    }
+    registerMyVisit@BloodServicePort(request)(response);
+    //this is a block  of my workflow that is called by the Blood Service
+    waitForMyExam(request)(response){
+
+    }
+
+    ecc ecc
+}
