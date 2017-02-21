@@ -1,6 +1,4 @@
-type RunResponse:void{
-  .stop : bool
-}
+
 type AddVisitRequest:void{
    .patientId: string
    .patientLoc: string
@@ -22,7 +20,6 @@ type GetVisitResponse:void{
 }
 interface GeneralStaffInterface {
 RequestResponse:
-  run(undefined)(RunResponse),
   stop(undefined)(undefined),
   addVisit(AddVisitRequest)(AddVisitResponse),
   getVisit(GetVisitRequest)(GetVisitResponse)

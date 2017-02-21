@@ -1,3 +1,3 @@
 constants {
-  ActivityRegistryLocation = "socket://localhost:9000"
+  ServiceRegistryLocation = "socket://localhost:9100"
 }
