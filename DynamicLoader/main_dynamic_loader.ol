@@ -2,31 +2,51 @@ include "file.iol"
 include "runtime.iol"
 include "console.iol"
 include "string_utils.iol"
-include "../StaffService/public/interfaces/GeneralStaffInterface.iol"
 
+include "DynamicLoaderInterface.iol"
+include "ActivityInterface.iol"
 
-outputPort StaffService {
-  Interfaces: GeneralStaffInterface
+execution{ concurrent }
+
+outputPort Activity {
+  Interfaces: ActivityInterface
+}
+
+inputPort DynamicLoader {
+  Location: MyLocation
+  Protocol: sodep
+  Interfaces: DynamicLoaderInterface
+}
+
+init {
+  println@Console( "Running DynamicLoader... ")()
 }
 
 
-
 main {
-       run_activity.stop = false;
 
-        undef(emb);
-        emb.type = "Jolie";
-        emb.filepath ="../StaffService/main_staff_service.ol";
-        valueToPrettyString@StringUtils(emb)(s);
-        println@Console( s )();
-        scope (loadEmbeddedService){
-                  install (default =>        valueToPrettyString@StringUtils(loadEmbeddedService)(s);
-                          println@Console("error" +s )() );
-                  loadEmbeddedService@Runtime( emb )( StaffService.location );
-                  valueToPrettyString@StringUtils(Activity)(s);
-                  println@Console( s )();
-        while (!run_activity.stop)  {
-           run@StaffService()( run_activity )
-        }
-    }
+    [ entry( request )( response ) {
+          println@Console( "DynamicLoader: Received initialization request for service_type " + request.service_type )();
+          service_type = request.service_type;
+          emb.type = "Jolie";
+          if( service_type == "staff" ) {
+              emb.filepath ="../StaffService/main_staff_service.ol"
+          } else if( service_type == "patient" ) {
+              /*TODO*/
+              emb.filepath = ""
+          } else {
+              throw( ServiceTypeDoesNotExists )
+          }
+          ;
+          run_activity.stop = false
+          ;
+          scope (loadEmbeddedService) {
+                  loadEmbeddedService@Runtime( emb )( Activity.location );
+                  run@Activity()( run_activity )
+          }
+    }]
+
+    [ stop( request )( response ) {
+        exit
+    }]
 }

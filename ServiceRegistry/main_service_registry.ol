@@ -2,15 +2,21 @@ include"./public/interfaces/ServiceRegistryInterface.iol"
 include "console.iol"
 include "string_utils.iol"
 
+include "../locations.iol"
+
 execution{ concurrent }
-init {
-   println@Console("ServiceRegister Started")()
-}
+
 inputPort ServiceRegistryPort {
-Location: "socket://localhost:2000"
+Location: ServiceRegistryLocation
 Protocol: sodep
 Interfaces: ServiceRegistryInterface
 }
+
+init {
+   start_port = 10000;
+   println@Console("ServiceRegister Started")()
+}
+
 main{
  [addService(request)(response){
       getRandomUUID@StringUtils()(randomKeyResponse);
@@ -19,6 +25,12 @@ main{
       valueToPrettyString@StringUtils(global)(s);
       println@Console(s)()
    }]
+
+ [ getNextLocation( request )( response ) {
+      response.host = "localhost";
+      response.port = start_port++
+ }]
+
  [removeService(request)(response){
      undef (global.services.(request.serviceCategory).(request.uniqueId))
    }]

@@ -1,3 +1,9 @@
+type Location: void {
+  .host: string
+  .port: int
+}
+
+
 type serviceType:void{
     .serviceCategory:string
     .location:string
@@ -31,6 +37,7 @@ type SearchServiceResponse:void{
 
 interface ServiceRegistryInterface {
   RequestResponse:
+   getNextLocation( void )( Location ),
    addService    (AddServiceRequest)(AddServiceResponse),
    removeService (RemoveServiceRequest)(RemoveServiceResponse),
    searchService (SearchServiceRequest)(SearchServiceResponse)
