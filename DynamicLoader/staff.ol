@@ -21,7 +21,7 @@ outputPort ServiceRegistryPort {
 }
 
 inputPort StaffExt {
-  Location: "localExt"
+  Location: "socket://localhost:7000"
   Protocol: sodep
   Interfaces: GeneralStaffInterface, ActivityInterface
 }

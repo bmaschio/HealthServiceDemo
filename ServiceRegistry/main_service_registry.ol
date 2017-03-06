@@ -13,7 +13,7 @@ Interfaces: ServiceRegistryInterface
 }
 
 init {
-   start_port = 10000;
+   global.start_port = 10000;
    println@Console("ServiceRegister Started")()
 }
 
@@ -28,7 +28,7 @@ main{
 
  [ getNextLocation( request )( response ) {
       response.host = "localhost";
-      response.port = start_port++
+      response.port = global.start_port++
  }]
 
  [removeService(request)(response){
