@@ -1,10 +1,16 @@
+include "../public/interfaces/DynamicLoaderInterface.iol"
+include "../../PublicResources/config/locations.iol"
+
+
 outputPort DynamicLoader {
-  Location: "socket://localhost:3001"
+  Location: DynamicLoaderLocation
   Protocol: sodep
-  RequestResponse: entry
+  Interfaces: DynamicLoaderInterface
 }
 
 main {
-  r.service_type = "staff";
+  r.service_group= "PATIENT";
+  r.service_type = "GenericPatient";
+  r.service_code = "check_up_wf";
   entry@DynamicLoader( r )( s )
 }

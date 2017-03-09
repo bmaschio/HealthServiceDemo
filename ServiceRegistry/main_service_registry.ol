@@ -2,7 +2,7 @@ include"./public/interfaces/ServiceRegistryInterface.iol"
 include "console.iol"
 include "string_utils.iol"
 
-include "../locations.iol"
+include "../PublicResources/config/locations.iol"
 
 execution{ concurrent }
 
@@ -36,7 +36,7 @@ main{
    }]
  [searchService(request)(response){
      counter = 0;
-     foreach (uniqueId : global.services.(request.serviceCategory)){
+     foreach (uniqueId : global.services.(request.service_type)){
          response.service[counter].uniqueId = uniqueId;
          response.service[counter].location = global.services.(request.serviceCategory).(uniqueId).location;
          counter++

@@ -1,0 +1,9 @@
+<List_Of_Services>
+<service_group>PATIENT</service_group>
+<service>
+<service_code>check_up_wf</service_code>
+<service_type>GenPatient</service_type>
+<service_description>Generic patient Check Up</service_description>
+<service_file>../WfTamplates/MyFirstTamplate.ol</service_file>
+</service>
+</List_Of_Services>

@@ -1,7 +1,10 @@
 include "console.iol"
 include "ini_utils.iol"
-include "../DynamicLoader/ActivityInterface.iol"
-include "../StaffService/public/interfaces/GeneralStaffInterface.iol"
+
+include "../PublicResources/interfaces/GeneralStaffInterface.iol"
+include "../PublicResources/interfaces/PatientWfInterface.iol"
+include ":./PublicResources/interfaces/ActivityInterface.iol"
+
 include"../ServiceRegistry/public/interfaces/ServiceRegistryInterface.iol"
 
 include "../locations.iol"
@@ -36,7 +39,7 @@ main{
        if ( global.status== "Waiting" ){
          with (requestAddService.service){
                .serviceCategory = "DOCTOR";
-               .location ="socket://localhost:7000"
+               .location = global.inputPorts.StaffExt.location
              } ;
          addService@ServiceRegistryPort(requestAddService)(responseAddService);
          response.stop = false;

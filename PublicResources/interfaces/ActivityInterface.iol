@@ -4,5 +4,6 @@ type RunResponse:void{
 
 interface ActivityInterface {
   RequestResponse:
-    run( void )( RunResponse )
+    init_service ( undefined )(undefined),
+    stop_service (undefined) (undefined)
 }

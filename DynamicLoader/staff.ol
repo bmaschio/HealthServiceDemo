@@ -21,7 +21,7 @@ outputPort ServiceRegistryPort {
 }
 
 inputPort StaffExt {
-  Location: "socket://localhost:7000"
+  Location: "socket://localhost:10001"
   Protocol: sodep
   Interfaces: GeneralStaffInterface, ActivityInterface
 }
@@ -36,7 +36,7 @@ main{
        if ( global.status== "Waiting" ){
          with (requestAddService.service){
                .serviceCategory = "DOCTOR";
-               .location ="socket://localhost:7000"
+               .location = global.inputPorts.StaffExt.location
              } ;
          addService@ServiceRegistryPort(requestAddService)(responseAddService);
          response.stop = false;
