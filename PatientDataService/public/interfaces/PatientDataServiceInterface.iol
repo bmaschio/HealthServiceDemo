@@ -1,185 +1,41 @@
-type InsuraceDataType:void{
-  .insurence_id:string
-  .insurence_nr:string
+type AddPatientWfRequest: void {
+  .location:string
+  .service_type:string
+  .service_code:string
+  .status:string
+  .service_id:string
+  emr_id :string
 }
+type AddPatientWfResponse: void
 
-type CreatePatientAnagraficRequest:void{
-   .surname:string
-   .name:string
-   .date_of_birth:string
-   .gender:string
-   .ssn:string
-   .insuranceData?:InsuraceDataType
-}
-
-type CreatePatientAnagraficResponse:void{
-  .mrn:long
-}
-
-type PatientPhysiologyDataType:void{
-  .name:string
-  .value: string
-}
-
-type AddPhysiologyDataRequest:void{
-  .mrn:int
-  .physiologyData*:PatientPhysiologyDataType
-}
-
-type AddPhysiologyDataResponse:void
-
-type ModifyPatientAnagraficRequest:void{
-  .surname:string
-  .name:string
-  .date_of_birth:string
-  .gender:string
-  .ssn:string
-  .insuranceData?:InsuraceDataType
-}
-
-type ModifyPatientAnagraficResponse:void
-
-type ModifyPhysiologyDataRequest:void{
-  .mrm:int
-  .physiologyData: PhysiologyDataType
-}
-
-type ModifyPhysiologyDataResponse:void
-
-type RemovePhysiologyDataRequest :void{
-  .mrm:int
-  .physiologyData*: PhysiologyDataType
-}
-
-
-type RemovePhysiologyDataResponse:void
-
-type GetPhysiologyDataRequest :void{
-  .mrm:int
-}
-type GetPhysiologyDataResponse:void{
-    .physiologyData*: PhysiologyDataType
-}
-
-
-type GetPatientDataRequest:void{
-  .surname?:string
-  .name?:string
-  .date_of_birth?:string
-  .gender?:string
-}
-
-type PatientDataType: void{
-  .surname:string
-  .name:string
-  .date_of_birth:string
-  .gender:string
-  .ssn:string
-  .insuranceData?:InsuraceDataType
-
-}
-type GetPatientDataResponse:void{
-  .patientData*: PatientDataType
-}
-
-type GetPatientDataFromSSNRequest:void{
-  .ssn:string
-}
-
-type GetPatientDataFromInsuranceRequest:void{
-    .insurence_id:string
-    .insurence_nr:string
-}
-
-
-type GetPhysiologyDataTypeRequest:void{
-    .name?:string
-}
-
-type PhysiologyDataType :void{
-  .name:string
-  .text:string
-  .type_name:string
-  .type_var:string
-  .referance_table?:string
-
-}
-type GetPhysiologyDataTypeResponse:void{
-  .physiologyDataType*: PhysiologyDataType
-}
-
-type InsertPhysiologyDataRangeRequest:void{
-  .name:string
-  .min: string
-  .max: string
-}
-
-type InsertPhysiologyDataRangeResponse:void
-
-
-type GetPhysiologyDataRangeRequest:void{
-  .name:string
-}
-
-type  GetPhysiologyDataRangeResponse:void{
-  .min: string
-  .max: string
-}
-type GetPhysiologyDataValuesRequest:void{
-  .referance_table:string
-}
-
-type PhysiologyDataTableValue:void{
+type AddStepToPatientWfRequest:void {
+  .service_id:string
+  .step_id:int
+  .data*:void{
+    .name:string
     .value:string
-    .value_text:string
-}
-type GetPhysiologyDataValuesResponse:void{
-    .values*: PhysiologyDataTableValue
+  }
 }
 
-type InsertPhysiologyDataTypeRequest:void{
-  .name:string
-  .text:string
-  .type_name:string
-  .type_var:string
-  .referance_table?:string
+type AddStepToPatientWfResponse:void
+
+type GetStepFromPatientWfRequest:void{
+   .service_id:string
 }
 
-type InsertPhysiologyDataTypeResponse:void
-
-type CreatePhysiologyDataTableRequest:void{
-  .referance_table:string
+type GetStepFromPatientWfResponse:void{
+  .step*:void{
+    .step_id:int
+    .data*:void{
+      .name:string
+      .value:string
+    }
+  }
 }
 
-type CreatePhysiologyDataTableResponse:void
-
-type InsertPhysiologyDataValueRequest:void{
-  .referance_table:string
-  .value:string
-  .value_text:string
-}
-type InsertPhysiologyDataValueResponse:void
-
-interface PatientDataServiceInterface {
+interface interfaceName {
 RequestResponse:
-  createPatientAnagrafic(CreatePatientAnagraficRequest)(CreatePatientAnagraficResponse),
-  modifyPatientAnagrafic (ModifyPatientAnagraficRequest) (ModifyPatientAnagraficResponse),
-  getPatientData(GetPatientDataRequest)(GetPatientDataResponse),
-  getPatientDataFromSSN(GetPatientDataFromSSNRequest)(GetPatientDataResponse),
-  getPatientDataFromInsurance ( GetPatientDataFromInsuranceRequest) (GetPatientDataResponse),
-  addPhysiologyData (AddPhysiologyDataRequest) (AddPhysiologyDataResponse),
-  removePhysiologyData (RemovePhysiologyDataRequest)(RemovePhysiologyDataResponse),
-  modifyPhysiologyData (ModifyPhysiologyDataRequest)(ModifyPhysiologyDataRequest),
-  getPhysiologyData(GetPhysiologyDataRequest)(GetPhysiologyDataResponse)
-}
-
-interface PatientDataServiceSupportInterface{
-  RequestResponse:
-   insertPhysiologyDataType (InsertPhysiologyDataTypeRequest)(InsertPhysiologyDataTypeResponse),
-   getPhysiologyDataType(GetPhysiologyDataTypeRequest)(GetPhysiologyDataTypeResponse),
-   insertPhysiologyDataRange (InsertPhysiologyDataRangeRequest)(InsertPhysiologyDataRangeResponse),
-   getPhysiologyDataRange (GetPhysiologyDataRangeRequest) (GetPhysiologyDataRangeResponse),
-   createPhysiologyDataTable(CreatePhysiologyDataTableRequest)(CreatePhysiologyDataTableResponse),
-   insertPhysiologyDataValue(InsertPhysiologyDataValueRequest)(InsertPhysiologyDataValueResponse),
-   getPhysiologyDataValues (GetPhysiologyDataValuesRequest) (GetPhysiologyDataValuesResponse)
+   addPatientWf(AddPatientWfRequest)(AddPatientWfResponse),
+   addStepToPatientWf (AddStepToPatientWfRequest)(AddStepToPatientWfResponse),
+   getStepFromPatientWf (GetStepFromPatientWfRequest)(GetStepFromPatientWfResponse)
 }

@@ -1,6 +1,9 @@
 include "../PublicResources/interfaces/GeneralStaffInterface.iol"
 include "../PublicResources/interfaces/PatientWfInterface.iol"
 include "../PublicResources/interfaces/ActivityInterface.iol"
+
+include"../ServiceRegistry/public/interfaces/ServiceRegistryInterface.iol"
+include "../PublicResources/config/locations.iol"
 include "console.iol"
 
 inputPort PatientPort {
@@ -15,6 +18,12 @@ inputPort PatientPortExt {
   Protocol: sodep
   Interfaces: PatientWfInterface, ActivityInterface
 }
+
+outputPort ServiceRegistryPort {
+  Location: ServiceRegistryLocation
+  Protocol: sodep
+  Interfaces: ServiceRegistryInterface
+}
 execution{single}
 
 main{
@@ -22,7 +31,12 @@ main{
    println@Console ("Doing Something for Step1")();
    init_service(request)(response){
      /* here it will register itself to the ServiceRegistry*/
-     println@Console ("Service Started")()
+     with (requestAddService.service){
+           .serviceCategory = request.service_type ;
+           .location = global.inputPorts.StaffExt.location
+         } ;
+     addService@ServiceRegistryPort(requestAddService)(responseAddService);
+     global.wf_status.patient_data << request.patient_data
    };
    provide
      [getStepMetaData()(){
@@ -35,7 +49,7 @@ main{
         }]
 
     [getPatientWfStatus(request)(response){
-        println@Console ("Waiting for step 1")()
+        response << global.wf_status
     }]
 
     until

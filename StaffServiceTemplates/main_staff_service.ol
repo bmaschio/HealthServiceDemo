@@ -3,11 +3,11 @@ include "ini_utils.iol"
 
 include "../PublicResources/interfaces/GeneralStaffInterface.iol"
 include "../PublicResources/interfaces/PatientWfInterface.iol"
-include ":./PublicResources/interfaces/ActivityInterface.iol"
+include "../PublicResources/interfaces/ActivityInterface.iol"
 
 include"../ServiceRegistry/public/interfaces/ServiceRegistryInterface.iol"
 
-include "../locations.iol"
+include "../PublicResources/config/locations.iol"
 
 execution{ concurrent }
 
