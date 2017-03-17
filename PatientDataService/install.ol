@@ -21,7 +21,14 @@ main{
       };
       connect@Database(connectionInfo)();
       q= "CREATE TABLE  patient_wf ( location text , service_type text , service_code text , status text , service_id text , emr_id  text)";
-        println@Console(q)();
-        update@Database(q)()
+      update@Database(q)();
+      undef (q);
+      q = "CREATE TABLE patient_data ( emr_id text, name text , surname text , insurance text )";
+      update@Database(q)();
+      undef (q);
+      q = "CREATE TABLE wf_data(service_id text , data_name text , data_value text)";
+      update@Database(q)()
+
+
   }
 }
