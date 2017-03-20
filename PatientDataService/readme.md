@@ -21,9 +21,14 @@ inputPort PatientDataPort {
   Interfaces: PatientDataServiceInterface
 }
 ```
+
 The location is in [on GitHub](https://github.com/bmaschio/HealthServiceDemo/tree/master/PublicResources/config/locations.iol)
+
 ```javascript
 constants {
   PatientDataServiceLocation = "socket://localhost:6100"
 }
+```
+
+The test files for services is in [on GitHub](https://github.com/bmaschio/HealthServiceDemo/tree/master/PatientDataService/test)
 
