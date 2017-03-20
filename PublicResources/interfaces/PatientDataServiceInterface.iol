@@ -10,10 +10,10 @@ type AddPatientWfResponse: void
 
 type AddStepToPatientWfRequest:void {
   .service_id:string
-  .step_id:int
+  .step_id:string
   .data*:void{
-    .name:string
-    .value:string
+    .data_name:string
+    .data_value:string
   }
 }
 
@@ -32,7 +32,7 @@ type GetStepFromPatientWfResponse:void{
   }
 }
 
-interface interfaceName {
+interface PatientDataServiceInterface {
 RequestResponse:
    addPatientWf (AddPatientWfRequest) (AddPatientWfResponse),
    addStepToPatientWf (AddStepToPatientWfRequest)(AddStepToPatientWfResponse),
