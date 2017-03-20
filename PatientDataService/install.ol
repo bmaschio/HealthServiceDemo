@@ -14,7 +14,7 @@ main{
 
       with (connectionInfo) {
         .host = "localhost";
-        .driver = "sqlite";
+        .driver = "sqlite"; 
         .username = "prova";
         .password = "prova";
         .database= "health_service.db"
